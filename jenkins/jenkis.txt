@@ -1,0 +1,51 @@
+
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee \
+  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
+sudo apt-get install jenkins
+
+
+crate webhook
+
+
+--------------------------------------------
+
+pipline{
+    enviroment{
+
+    }
+    stages{
+        parallel{
+            stage('Build'){
+                when{
+                    allOf{
+                        triggeredBy ''
+                        branch 'master'
+                    }
+                }
+
+                steps{
+                    echo "step one !"
+                    sh 'python manage.py runserver'
+
+                }
+
+                post{
+                    success{
+                        echo 'after run all step success run this'
+                    }
+                    failer{
+
+                    }
+                }
+            }
+
+            stage('Test'){
+
+            }
+        }
+    }
+}

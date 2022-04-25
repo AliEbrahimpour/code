@@ -1,0 +1,25 @@
+pipline{
+    agent any
+    stages{
+        stage('Build'){
+            steps{
+                echo "start Building ..."
+            }
+        }
+        stage('Test'){
+            parallel{
+                stage('test 1'){
+                    steps{
+                        echo "start Testing 1 ...."
+                    }
+                }
+                stage('test 2'){
+                    steps{
+                        echo "start Testing 2 ...."
+                    }
+                }
+            }
+        }
+
+    }
+}
